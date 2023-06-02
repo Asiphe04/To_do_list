@@ -51,6 +51,23 @@ function toDoList(task) {
   });
   updateLocalStorage();
 }
+function sortTasks() {
+  const liEls = document.querySelectorAll("li");
+  const sortedTasks = Array.from(liEls)
+    .sort((a, b) => a.innerText.localeCompare(b.innerText))
+    .map((liEl) => {
+      return {
+        name: liEl.innerText,
+        checked: liEl.classList.contains("checked"),
+      };
+    });
+
+  ul.innerHTML = "";
+
+  sortedTasks.forEach((task) => {
+    toDoList(task);
+  });
+}
 
 function updateLocalStorage() {
   const liEls = document.querySelectorAll("li");
