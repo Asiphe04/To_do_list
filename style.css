@@ -1,0 +1,10 @@
+body {
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+.container{
+    position: absolute;
+    border: 1px solid white;
+}
