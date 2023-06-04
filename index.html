@@ -5,34 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <title>To-do list</title>
+    <title>TO-DO LIST</title>
   </head>
   <body>
-    <form class="form">
-      <h1>To-do list</h1>
-
+    <div class="container">
+      <h1>TO-DO LIST</h1>
+      <button id="sortButton">Sort</button>
       <input
         type="text"
-        class="input"
-        placeholder="Add items to your to do list"
-        id="input
-      "
+        name="input"
+        id="input"
+        placeholder="Add items to your to do list..."
       />
-      <br />
-      <br />
-      <button onclick="toDoList(task)">Add</button>
-      <button onclick="sortTasks()">Sort</button>
-      <br />
-      <ul class="list"></ul>
-    </form>
-
+      <button id="addButton">Add</button>
+      <ul id="taskList"></ul>
+    </div>
     <script src="/code.js"></script>
   </body>
 </html>

@@ -1,29 +1,79 @@
 body {
   background-color: #121212;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  margin: 0;
-}
+  color: white;
 
-.form {
-  position: absolute;
-  top: 30%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  width: 400px;
- 
-  border-radius: 10px;
+  text-align: center;
 }
-.input {
-  width: 100%;
+#taskList {
+  width: 300px;
+}
+#input {
+  padding: 12px 20px;
+  margin: 8px 0;
   box-sizing: border-box;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
- 
-  font-size: 20px;
+}
+button {
+  background-color: rgb(133, 133, 254);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+}
+.container {
+  padding: 12px 20px;
+  border: 1px solid black;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+#taskList {
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+.checklist-icon {
+  margin-right: 8px;
+}
+.delete-icon {
+  margin-left: 8px;
 }
 
-button{
-  padding: 5px;
-  font-size: 20px;
+.task-text {
+  margin-left: 16px;
+  margin-right: 16px;
 }
+#taskList {
+  list-style: none;
+}
+button:hover{
+  background-color: rgb(67, 67, 252);
+}
+
+@media screen and (max-width: 700px) {
+  #taskList {
+    width: 400px;
+  }
+
+  .container {
+    padding: 12px 20px;
+  }
+}
+
+
+@media screen and (max-width: 300px) {
+  #taskList {
+    width: 200px;
+  }
+
+  .container {
+    padding: 6px 10px;
+  }
+
+  .task-text {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+

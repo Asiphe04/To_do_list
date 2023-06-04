@@ -1,82 +1,123 @@
-let form = document.querySelector(".form");
+// linking my buttons, input and list 
+const taskInput = document.getElementById("input");
+const addButton = document.getElementById("addButton");
+const sortButton = document.getElementById("sortButton");
+const taskList = document.getElementById("taskList");
 
-let input = document.querySelector(".input");
+addButton.addEventListener("click", addTask);
+sortButton.addEventListener("click", sorttTasks);
+document.addEventListener("DOMContentLoaded", loadTasks);
 
-let ul = document.querySelector(".list");
-
-let list = JSON.parse(localStorage.getItem("list"));
-if (list) {
-  list.forEach((task) => {
-    toDoList(task);
-  });
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  toDoList();
-});
-
-function toDoList(task) {
-  let newTask = input.value;
-  if (task) {
-    newTask = task.name;
+// function to add task
+function addTask() {
+  const task = taskInput.value.trim();
+  if (task === "") {
+    alert("Item name cannot be empty.");
+    return;
   }
 
-  const liEl = document.createElement("li");
-  if (task && task.checked) {
-    liEl.classList.add("checked");
+  if (task.length < 3) {
+    alert("Item name must have more than three characters.");
+    return;
   }
-  liEl.innerText = newTask;
-  ul.appendChild(liEl);
-  input.value = "";
-  const checkBtnEl = document.createElement("div");
-  checkBtnEl.innerHTML = `
-  <i class="fas fa-check-square">
-  `;
-  liEl.appendChild(checkBtnEl);
-  const trashBtnEl = document.createElement("div");
-  trashBtnEl.innerHTML = `
-  <i class="fas fa-trash"></i>
-  `;
-  liEl.appendChild(trashBtnEl);
+  if (task.charAt(0) === task.charAt(0).toLowerCase()) {
+    alert("The first character should be in uppercase!");
+    return;
+  }
+  
+  
+  const listItem = createTaskListItem(task);
+  taskList.appendChild(listItem);
 
-  checkBtnEl.addEventListener("click", () => {
-    liEl.classList.toggle("checked");
-    updateLocalStorage();
-  });
+  saveTasks();
 
-  trashBtnEl.addEventListener("click", () => {
-    liEl.remove();
-    updateLocalStorage();
-  });
-  updateLocalStorage();
-}
-function sortTasks() {
-  const liEls = document.querySelectorAll("li");
-  const sortedTasks = Array.from(liEls)
-    .sort((a, b) => a.innerText.localeCompare(b.innerText))
-    .map((liEl) => {
-      return {
-        name: liEl.innerText,
-        checked: liEl.classList.contains("checked"),
-      };
-    });
-
-  ul.innerHTML = "";
-
-  sortedTasks.forEach((task) => {
-    toDoList(task);
-  });
+  taskInput.value = "";
 }
 
-function updateLocalStorage() {
-  const liEls = document.querySelectorAll("li");
-  list = [];
-  liEls.forEach((liEl) => {
-    list.push({
-      name: liEl.innerText,
-      checked: liEl.classList.contains("checked"),
-    });
+// function to create task
+function createTaskListItem(task) {
+  const listItem = document.createElement("li");
+
+  const checklistButton = document.createElement("span");
+  checklistButton.innerHTML = "&#x2713;";
+  checklistButton.classList.add("checklist-icon");
+  checklistButton.addEventListener("click", toggleChecklist);
+  listItem.appendChild(checklistButton);
+
+  const taskText = document.createElement("span");
+  taskText.textContent = task;
+  taskText.classList.add("task-text");
+  listItem.appendChild(taskText);
+
+  const deleteButton = document.createElement("span");
+  deleteButton.innerHTML = "&#x1F5D1;"; 
+  deleteButton.classList.add("delete-icon");
+  deleteButton.addEventListener("click", deleteTask);
+  listItem.appendChild(deleteButton);
+
+  return listItem;
+}
+// funcion to delete task
+function deleteTask(event) {
+  const listItem = event.target.parentElement;
+  taskList.removeChild(listItem);
+  saveTasks();
+}
+
+function toggleChecklist(event) {
+  const listItem = event.target.parentElement;
+  listItem.classList.toggle("checked");
+  listItem.style.textDecoration = "line-through";
+
+  saveTasks();
+}
+
+// Function to save tasks
+
+function saveTasks() {
+  const tasks = Array.from(taskList.children).map((item) => {
+    return {
+      text: item.firstChild.textContent,
+      checked: item.classList.contains("checked"),
+    };
   });
-  localStorage.setItem("list", JSON.stringify(list));
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Function to load tasks
+function loadTasks() {
+  const savedTasks = localStorage.getItem("tasks");
+  if (!savedTasks) {
+    return;
+  }
+  const tasks = JSON.parse(savedTasks);
+  tasks.forEach((task) => {
+    const listItem = createTaskListItem(task.text);
+    if (task.checked) {
+      listItem.classList.add("checked");
+    }
+    taskList.appendChild(listItem);
+  });
+}
+
+// function to sot tasks
+function sorttTasks() {
+  let list, i, switching, b, shouldSwitch;
+  list = document.querySelector('ul');
+  switching = true;
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("LI");
+    for (i = 0; i < (b.length - 1); i++) {
+      shouldSwitch = false;
+      if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+    }
+  }
 }
